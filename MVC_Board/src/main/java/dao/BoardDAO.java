@@ -59,7 +59,7 @@ public class BoardDAO {
 			JdbcUtil.close(pstmt);
 		}
 		
-		Exception boardNumExecption = new Exception("board_num exception");
+		Exception board_numExecption = new Exception("board_num exception");
 
 		
 		//
@@ -67,7 +67,7 @@ public class BoardDAO {
 		// 예외 처리
 		try {
 			if(board_num <= 0) {
-				throw boardNumExecption;
+				throw board_numExecption;
 			}
 			pstmt = conn.prepareStatement(sql);
 			//4. pstmt 에 ? 문자에 변수 채워주기
@@ -200,7 +200,6 @@ public class BoardDAO {
 			pstmt.setInt(1, board_num);
 			
 			countUpdate = pstmt.executeUpdate();
-			System.out.println(countUpdate);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("BoardDAO - updateReadcount() SQL Exception");
@@ -254,4 +253,118 @@ public class BoardDAO {
 		return board;
 	}
 	
+	public boolean selectBoardWriter(int board_num , String board_pass) {
+		// 사용될 변수 객체 초기화
+		boolean isBoardWriter = false;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		
+		// sql 문 작성
+
+		String sql = "SELECT * FROM board WHERE board_num = ? AND board_pass = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			pstmt.setString(2, board_pass);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {	
+				isBoardWriter = true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("BoardDAO - selectBoardWriter() SQL Exception");
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+		
+		
+		return isBoardWriter;
+	}
+	
+	public int deleteBoard(int board_num) {
+		int deleteCount = 0;
+		PreparedStatement pstmt = null;
+		
+		// sql 문 작성
+
+		String sql = "DELETE FROM board WHERE board_num = ? ";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			
+			deleteCount = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("BoardDAO - deleteBoard() SQL Exception");
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(pstmt);
+		}
+		
+		return deleteCount;
+	}
+	
+	public String selectBoardRealfile(int board_num) {
+		String board_real_file = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		
+		// sql 문 작성
+
+		String sql = "SELECT board_real_file FROM board WHERE board_num = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, board_num);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {	
+				board_real_file = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("BoardDAO - selectBoardRealfile() SQL Exception");
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+		
+		return board_real_file;
+	}
+	
+	public int updateBoard(int board_num , BoardBean board) {
+		int updateCount = 0;
+		PreparedStatement pstmt = null;
+		
+		// sql 문 작성
+
+		String sql = "UPDATE board SET "
+				+ "board_name = ? ,"
+				+ "board_subject = ? ,"
+				+ "board_content = ? "
+				+ " WHERE board_num = ? ";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, board.getBoard_name());
+			pstmt.setString(2, board.getBoard_subject());
+			pstmt.setString(3, board.getBoard_content());
+			pstmt.setInt(4, board_num);
+			
+			updateCount = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("BoardDAO - updateBoard() SQL Exception");
+		}finally {
+			JdbcUtil.close(pstmt);
+		}
+
+		return updateCount;
+	}
 }

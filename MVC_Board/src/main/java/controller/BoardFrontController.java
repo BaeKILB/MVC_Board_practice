@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import action.BoardDeleteProAction;
 import action.BoardDetailAction;
 import action.BoardListAction;
+import action.BoardModifyFromAction;
+import action.BoardModifyProAction;
 import action.BoardWriteProAction;
 import vo.ActionForward;
 
@@ -44,7 +47,7 @@ public class BoardFrontController extends HttpServlet {
 		}
 		// 글쓰기 submit 을 받으면 동작
 		else if(servletPath.equals("/BoardWritePro.bo")) {
-			System.out.println("BoardWritePro");
+
 			action = new BoardWriteProAction();
 			forward = action.execute(request, response);
 			// 현 url 상태는 비즈니스 로직으로 가는 url 이기떄문에
@@ -67,8 +70,47 @@ public class BoardFrontController extends HttpServlet {
 			// forward 에 인스턴스를 만들어 직접 값을 집어넣기
 			action = new BoardDetailAction();
 			forward = action.execute(request, response);	
+		}		
+		else if(servletPath.equals("/BoardModifyFrom.bo")) {
+			// 비즈니스 로직을 필요로 하지 않음으로
+			// forward 에 인스턴스를 만들어 직접 값을 집어넣기
+			forward = new ActionForward();
+			forward.setPath("board/board_modify_form.jsp");
+			forward.setRedirect(false);
 		}
 		
+		else if(servletPath.equals("/BoardDeleteForm.bo")) {
+			// 비즈니스 로직을 필요로 하지 않음으로
+			// forward 에 인스턴스를 만들어 직접 값을 집어넣기
+
+			forward = new ActionForward();
+			forward.setPath("board/board_delete_form.jsp");
+			forward.setRedirect(false);
+		}
+		// 삭제 요청을 받으면 동작
+		else if(servletPath.equals("/BoardDeletePro.bo")) {
+			action = new BoardDeleteProAction();
+			forward = action.execute(request, response);
+			// 현 url 상태는 비즈니스 로직으로 가는 url 이기떄문에
+			// 새페이지로 이동하는 리다이렉트 채택
+			
+		}		
+		else if(servletPath.equals("/BoardModifyForm.bo")) {
+			// 비즈니스 로직을 필요로 하지 않음으로
+			// forward 에 인스턴스를 만들어 직접 값을 집어넣기
+			System.out.println("BoardModifyFrom");
+
+			action = new BoardModifyFromAction();
+			forward = action.execute(request, response);
+		}
+		// 삭제 요청을 받으면 동작
+		else if(servletPath.equals("/BoardModifyPro.bo")) {
+			action = new BoardModifyProAction();
+			forward = action.execute(request, response);
+			// 현 url 상태는 비즈니스 로직으로 가는 url 이기떄문에
+			// 새페이지로 이동하는 리다이렉트 채택
+			
+		}
 		//포워드 객체 확인해서 디스패치 또는 리다이렉트 하기
 		if(forward != null) {
 			
