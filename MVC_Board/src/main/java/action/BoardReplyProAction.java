@@ -9,21 +9,22 @@ import javax.servlet.http.HttpServletResponse;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
+import svc.BoardReplyProService;
 import svc.BoardWriteProService;
 import vo.ActionForward;
 import vo.BoardBean;
 
-public class BoardWriteProAction implements Action{
+public class BoardReplyProAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+	// TODO Auto-generated method stub
 		
 		// 사용될 변수,객체 초기화
 		ActionForward forward = null;
-		BoardWriteProService service = null;
+		BoardReplyProService service = null;
 		
-		boolean isWriteSuccess = false;
+		boolean isReplySuccess = false;
 		//--------------------------------------------------------
 		// 게시물 작성자(=클라이언트)의 IP주소를 알아내야하는 경우
 //		String writerAddr = request.getRemoteAddr();
@@ -72,9 +73,9 @@ public class BoardWriteProAction implements Action{
 			board.setBoard_content(multi.getParameter("board_content"));
 			board.setBoard_file(multi.getOriginalFileName("board_file")); // 원본 파일 명
 			board.setBoard_real_file(multi.getFilesystemName("board_file")); // 실제 업로드된 파일 명
-			board.setBoard_re_ref(0);
-			board.setBoard_re_lev(0);
-			board.setBoard_re_seq(0);
+			board.setBoard_re_ref(Integer.parseInt(multi.getParameter("board_re_ref")));
+			board.setBoard_re_lev(Integer.parseInt(multi.getParameter("board_re_lev")));
+			board.setBoard_re_seq(Integer.parseInt(multi.getParameter("board_re_seq")));
 			board.setBoard_readcount(0);
 			
 			if(board.getBoard_file() == null) {
@@ -85,22 +86,22 @@ public class BoardWriteProAction implements Action{
 			// 주의 파일명은 getParameter 메서드로 단수 처리 불가능
 			// => 원본 파일명: getOriginalFileName
 			//		실제 업로드 되는 파일 명 : getFileSystemName()
-
-
-			//서비스 객체 만들어서 메서드 호출
-			service = new BoardWriteProService();
-			isWriteSuccess = service.registBoard(board);
 			
-			if(isWriteSuccess) {
+			System.out.println(board);
+			//서비스 객체 만들어서 메서드 호출
+			service = new BoardReplyProService();
+			isReplySuccess = service.registReplyBoard(board);
+
+			response.setContentType("text/html; charset=UTF-8");
+			if(isReplySuccess) {
 				forward = new ActionForward();
 				forward.setPath("./BoardList.bo");
 				forward.setRedirect(true);
 			}
 			else {
-				response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
 				out.print("<script>");
-				out.print("alert('글 쓰기 실패!);'");
+				out.print("alert('글 답글 작성 실패!);'");
 				out.print("history.back();");
 				out.print("</script>");
 				out.flush();

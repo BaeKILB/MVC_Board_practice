@@ -188,5 +188,30 @@ public class MemberDAO {
 		
 		return memberList;
 	}
+	public int deleteMember(String id, String passwd) {
+		int deleteCount = 0;
+		PreparedStatement pstmt = null;
+		
+		// sql 문 작성
+
+		String sql = "DELETE FROM member WHERE id = ? AND passwd = ? ";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, passwd);
+			
+			deleteCount = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("MemberDAO - deleteMember() SQL Exception");
+			e.printStackTrace();
+		}finally {
+			JdbcUtil.close(pstmt);
+		}
+		
+		return deleteCount;
+	}
+	
 	
 }

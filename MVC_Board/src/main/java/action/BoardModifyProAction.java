@@ -56,8 +56,8 @@ public class BoardModifyProAction implements Action {
 				PrintWriter out = response.getWriter();
 				out.print("<script>");
 				out.print("alert('접근 권한이 없습니다!');");
-				out.print("</script>");
 				out.print("history.back();");
+				out.print("</script>");
 				out.flush();
 			}
 

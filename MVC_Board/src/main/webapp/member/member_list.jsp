@@ -15,7 +15,7 @@
 	<div align="right">
 	<jsp:include page="/inc/top.jsp"></jsp:include>
 	</div>
-	 </header>
+	</header>
 
 	<article>
 		<h1>회원 가입</h1>

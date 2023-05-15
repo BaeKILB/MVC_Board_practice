@@ -38,6 +38,11 @@
 </style>
 </head>
 <body>
+	<header>
+	<div align="right">
+	<jsp:include page="/inc/top.jsp"></jsp:include>
+	</div>
+	</header>
 	<!-- 게시판 등록 -->
 	<section id="writeForm">
 		<h1>게시판 글 등록</h1>

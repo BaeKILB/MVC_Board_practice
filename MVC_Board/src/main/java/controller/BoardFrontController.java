@@ -15,6 +15,8 @@ import action.BoardDetailAction;
 import action.BoardListAction;
 import action.BoardModifyFromAction;
 import action.BoardModifyProAction;
+import action.BoardReplyFormAction;
+import action.BoardReplyProAction;
 import action.BoardWriteProAction;
 import vo.ActionForward;
 
@@ -54,11 +56,6 @@ public class BoardFrontController extends HttpServlet {
 			// 새페이지로 이동하는 리다이렉트 채택
 			
 		}
-		
-		// 비즈니스 로직을 필요로함 으로 
-		// action 쪽으로 request 와 response를 넘겨주고
-		// forward 정보를 받아오기
-
 		else if(servletPath.equals("/BoardList.bo")) {
 			// 비즈니스 로직을 필요로 하지 않음으로
 			// forward 에 인스턴스를 만들어 직접 값을 집어넣기
@@ -96,10 +93,7 @@ public class BoardFrontController extends HttpServlet {
 			
 		}		
 		else if(servletPath.equals("/BoardModifyForm.bo")) {
-			// 비즈니스 로직을 필요로 하지 않음으로
-			// forward 에 인스턴스를 만들어 직접 값을 집어넣기
-			System.out.println("BoardModifyFrom");
-
+	
 			action = new BoardModifyFromAction();
 			forward = action.execute(request, response);
 		}
@@ -111,6 +105,20 @@ public class BoardFrontController extends HttpServlet {
 			// 새페이지로 이동하는 리다이렉트 채택
 			
 		}
+		else if(servletPath.equals("/BoardReplyForm.bo")) {
+			action = new BoardReplyFormAction();
+			forward = action.execute(request, response);
+		}		// 글쓰기 submit 을 받으면 동작
+		else if(servletPath.equals("/BoardReplyPro.bo")) {
+
+			action = new BoardReplyProAction();
+			forward = action.execute(request, response);
+			// 현 url 상태는 비즈니스 로직으로 가는 url 이기떄문에
+			// 새페이지로 이동하는 리다이렉트 채택
+			
+		}
+		
+		
 		//포워드 객체 확인해서 디스패치 또는 리다이렉트 하기
 		if(forward != null) {
 			

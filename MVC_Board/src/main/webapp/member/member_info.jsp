@@ -56,6 +56,13 @@
 					<th>가입동기</th>
 					<td>${member.motivation }</td>
 				<tr>
+				<tr>
+					<td colspan="2" align="center">
+					<input type="button" value="탈퇴하기" onclick="location.href='MemberCheckoutForm.me'">
+					</td>
+					
+				</tr>
+				
 				<%--
 				</tr>
 					<td colspan="2" align="center"><input type="submit" value="가입">
@@ -63,6 +70,7 @@
 						value="돌아가기"></td>
 				</tr>
 				 --%>
+				 
 			</table>
 		</form>
 

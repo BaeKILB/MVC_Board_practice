@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import action.MemberCheckoutFormAction;
+import action.MemberCheckoutProAction;
 import action.MemberInfoAction;
 import action.MemberJoinProAction;
 import action.MemberListAction;
@@ -101,7 +103,19 @@ public class MemberFrontController extends HttpServlet {
 		else if(command.equals("/MemberList.me")){
 			action = new MemberListAction(); 
 			forward = action.execute(request, response);
+		}		
+		else if(command.equals("/MemberCheckoutForm.me")){
+			// 멤버 회원탈퇴 물어보는 form
+			// 세션에 sId 있는지(로그인 여부) 확인 후 화면 띄우기
+			action = new MemberCheckoutFormAction(); 
+			forward = action.execute(request, response);
 		}
+		else if(command.equals("/MemberCheckoutPro.me")){
+			// 회원탈퇴 동작
+			action = new MemberCheckoutProAction(); 
+			forward = action.execute(request, response);
+		}
+		
 		//ActionForward 객체의 포워딩 정보를 사용 공통으로 포워드 처리
 		// 1.null 이 아닐경우 판별
 		if(forward != null) {

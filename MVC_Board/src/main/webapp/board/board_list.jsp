@@ -67,6 +67,11 @@ a {
 </style>
 </head>
 <body>
+	<header>
+	<div align="right">
+	<jsp:include page="/inc/top.jsp"></jsp:include>
+	</div>
+	</header>
 	<%-- pageNum 파라미터 가져와서 저장(없을경우 기본값 1로 설정) --%>
 	
 	<c:set var="pageNum" value="1" />
@@ -92,8 +97,15 @@ a {
 			<c:forEach items="${boardList }" var="board">
 				<tr>
 					<td>${board.board_num }</td>
-					<td id="subject"><a
-						href="BoardDetail.bo?board_num=${board.board_num }&pageNum=${pageNum}">${board.board_subject }</a>
+					<td id="subject">
+					<a href="BoardDetail.bo?board_num=${board.board_num }&pageNum=${pageNum}">
+					<c:if test="${board.board_re_lev > 0 }">
+						<c:forEach var="i" begin="1" end="${board.board_re_lev }">
+							&nbsp;
+						</c:forEach>
+						<img alt="re" src="images/re.gif">
+					</c:if>
+						${board.board_subject }</a>
 					</td>
 					<td>${board.board_name }</td>
 					<td>
